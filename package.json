@@ -1,0 +1,16 @@
+{
+  "name": "akaten-tsuketsukekun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/bolt": "^3.11.0",
+    "dotenv": "^16.0.0"
+  }
+}
