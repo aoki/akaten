@@ -2,6 +2,16 @@ const { App } = require("@slack/bolt");
 
 require("dotenv").config();
 
+const { TextLintEngine } = require("textlint");
+
+const options = {
+  presets: ["preset-ja-technical-writing"],
+  textlintrc: false,
+  color: false,
+};
+
+const engine = new TextLintEngine(options);
+
 const app = new App({
   token: process.env.SLACK_BOT_AUTH_TOKEN,
   appToken: process.env.SLACK_BOT_APP_TOKEN,
@@ -18,9 +28,10 @@ const app = new App({
     say("Hello!");
   });
 
-  app.message(/.+/i, ({ message, say }) => {
-    console.dir(message);
-    say(`:parrot_: ${message.text}`);
+  app.message(/.+/i, async ({ message, say }) => {
+    const res = await engine.executeOnText(message.text);
+    const output = engine.formatResults(res);
+    say(`${output}`);
   });
 
   // アプリを起動します
