@@ -20,18 +20,42 @@ const app = new App({
 });
 
 (async () => {
-  app.message("knock knock", async ({ message, say }) => {
-    await say(`_Who's there?_`);
+  app.message("hello", async ({ message, say }) => {
+    await say({
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `Hey there <@${message.user}>!!`,
+          },
+          accessory: {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: "Click Me",
+            },
+            action_id: "button_click",
+          },
+        },
+      ],
+    });
   });
 
-  app.message(/hello/i, ({ message, say }) => {
-    say("Hello!");
+  app.action("button_click", async ({ body, ack, say }) => {
+    // アクションのリクエストを確認
+    await ack();
+    await say(`<@${body.user.id}> clicked the button`);
   });
 
-  app.message(/.+/i, async ({ message, say }) => {
-    const res = await engine.executeOnText(message.text);
-    const output = engine.formatResults(res);
-    say(`${output}`);
+  // app.message(/.+/i, async ({ message, say }) => {
+  //   const res = await engine.executeOnText(message.text);
+  //   const output = engine.formatResults(res);
+  //   say(`${output}`);
+  // });
+
+  app.message("kill", async ({ message, say }) => {
+    process.exit(0);
   });
 
   // アプリを起動します
