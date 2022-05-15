@@ -45,13 +45,13 @@ const app = new App({
 
   // https://api.slack.com/methods/users.info
   app.message("info", async (message, say) => {
-    const info = {};
-    // const info = {
-    //   team_id: message.team_id,
-    //   user: message.envent.user,
-    //   channel: message.envent.channel,
-    // };
-    console.log(JSON.stringify(message, null, 2));
+    const info = {
+      teamId: "",
+      userId: "",
+      botUserId: message.context.botUserId,
+      botId: message.context.botId,
+    };
+
     await say(`${JSON.stringify(info, null, 2)}`);
   });
 
@@ -85,6 +85,7 @@ const app = new App({
 
   // アプリを起動します
   await app.start(process.env.PORT || 3000);
+  const botInfo = await app.client.auth.test();
 
   console.log("⚡️ Bolt app is running!");
 })();
